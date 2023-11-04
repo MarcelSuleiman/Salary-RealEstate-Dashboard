@@ -107,16 +107,16 @@ def create_graph_test(lang, position_name=None, city_name=None):
         figure.update_xaxes(
             categoryorder='array',
             categoryarray=[
-                'Hommes',
-                'Femmes',
+                'Man',
+                'Woman',
             ]
         )
     elif lang == "FR":
         figure.update_xaxes(
             categoryorder='array',
             categoryarray=[
-                'Man',
-                'Woman',
+                'Hommes',
+                'Femmes',
             ]
         )
 
@@ -191,6 +191,7 @@ def create_graph_test_2(position_name, city_name, lang):
                 '35-44 rokov',
                 '45-54 rokov',
                 '55+ rokov',
+                'Neuvedené',
             ]
         )
     elif lang == "EN":
