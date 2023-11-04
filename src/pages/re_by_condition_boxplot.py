@@ -80,6 +80,18 @@ def create_custom_re_graph_condition_boxplot(city, re_type, lang):
                 'Developer project',
             ]
         )
+    elif lang == "FR":
+        figure.update_xaxes(
+            categoryorder='array',
+            categoryarray=[
+                "État d'origine",
+                'Reconstruction partielle',
+                'Reconstruction complète',
+                'Nouveau bâtiment',
+                'En cours de construction',
+                'Projet de développement',
+            ]
+        )
 
     figure.add_annotation(
         xref='paper',

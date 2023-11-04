@@ -10,8 +10,7 @@ from dash import html
 from constants.districts import CITIES
 from constants.url import API_URL, API_PORT
 from maindash import app
-from translate.translate import translate
-
+from translate.translate import translate, translate_dataset
 
 compare_gender_salary_base = dcc.Graph(
     id='compare_gender_salary_base', figure={}
@@ -63,15 +62,21 @@ def create_graph_test(lang, position_name=None, city_name=None):
     res = json.loads(r.text)
     df = pd.DataFrame.from_dict(res)
 
+    which_df = "salary_boxplot_by_gender"
+    df = translate_dataset(df, lang, which_df)
+
     figure = px.box(
         df,
         y="salary",
+        x="gender",
         color="gender",
         hover_data=["position", "position_place"],
         labels=translate(lang),
         height=750,
         color_discrete_map={  # replaces default color mapping by value
-            "Man": "blue", "Woman": "red"
+            "Man": "blue", "Woman": "red",
+            "Hommes": "blue", "Femmes": "red",
+            "Muži": "blue", "Ženy": "red"
         },
         # template="simple_white",
     )
@@ -90,13 +95,30 @@ def create_graph_test(lang, position_name=None, city_name=None):
         ),
     )
 
-    figure.update_xaxes(
-        categoryorder='array',
-        categoryarray=[
-            'Man',
-            'Woman',
-        ]
-    )
+    if lang == "SK":
+        figure.update_xaxes(
+            categoryorder='array',
+            categoryarray=[
+                'Muži',
+                'Ženy',
+            ]
+        )
+    elif lang == "EN":
+        figure.update_xaxes(
+            categoryorder='array',
+            categoryarray=[
+                'Hommes',
+                'Femmes',
+            ]
+        )
+    elif lang == "FR":
+        figure.update_xaxes(
+            categoryorder='array',
+            categoryarray=[
+                'Man',
+                'Woman',
+            ]
+        )
 
     return figure
 
@@ -127,6 +149,9 @@ def create_graph_test_2(position_name, city_name, lang):
     res = json.loads(r.text)
     df = pd.DataFrame.from_dict(res)
 
+    which_df = "salary_boxplot_by_age"
+    df = translate_dataset(df, lang, which_df)
+
     figure = px.box(
         df,
         y="salary",
@@ -136,7 +161,9 @@ def create_graph_test_2(position_name, city_name, lang):
         labels=translate(lang),
         height=750,
         color_discrete_map={  # replaces default color mapping by value
-            "Man": "blue", "Woman": "red"
+            "Man": "blue", "Woman": "red",
+            "Hommes": "blue", "Femmes": "red",
+            "Muži": "blue", "Ženy": "red"
         },
         # template="simple_white",
     )
@@ -155,16 +182,41 @@ def create_graph_test_2(position_name, city_name, lang):
         ),
     )
 
-    figure.update_xaxes(
-        categoryorder='array',
-        categoryarray=[
-            '<24 rokov',
-            '25-34 rokov',
-            '35-44 rokov',
-            '45-54 rokov',
-            '55+ rokov',
-        ]
-    )
+    if lang == "SK":
+        figure.update_xaxes(
+            categoryorder='array',
+            categoryarray=[
+                '<24 rokov',
+                '25-34 rokov',
+                '35-44 rokov',
+                '45-54 rokov',
+                '55+ rokov',
+            ]
+        )
+    elif lang == "EN":
+        figure.update_xaxes(
+            categoryorder='array',
+            categoryarray=[
+                '<24 years old',
+                '25-34 years old',
+                '35-44 years old',
+                '45-54 years old',
+                '55+ years',
+                'Not listed',
+            ]
+        )
+    elif lang == "FR":
+        figure.update_xaxes(
+            categoryorder='array',
+            categoryarray=[
+                '<24 ans',
+                '25-34 ans',
+                '35-44 ans',
+                '45-54 ans',
+                '55+ ans',
+                'Non listé',
+            ]
+        )
 
     return figure
 
