@@ -89,3 +89,29 @@ def translate_dataset(df, lang, which_df):
             return df
         else:
             return df
+
+    if which_df == "salary_boxplot_by_age" or which_df == "salary_boxplot_by_gender":
+        if lang == "SK":
+            df['gender'].mask(df['gender'] == 'Man', 'Muži', inplace=True)
+            df['gender'].mask(df['gender'] == 'Woman', 'Ženy', inplace=True)
+            return df
+        elif lang == "EN":
+            df['age'].mask(df['age'] == '<24 rokov', '<24 years old', inplace=True)
+            df['age'].mask(df['age'] == '25-34 rokov', '25-34 years old', inplace=True)
+            df['age'].mask(df['age'] == '35-44 rokov', '35-44 years old', inplace=True)
+            df['age'].mask(df['age'] == '45-54 rokov', '45-54 years old', inplace=True)
+            df['age'].mask(df['age'] == '55+ rokov', '55+ years', inplace=True)
+            df['age'].mask(df['age'] == '', 'Not listed', inplace=True)
+            return df
+        elif lang == "FR":
+            df['gender'].mask(df['gender'] == 'Man', 'Hommes', inplace=True)
+            df['gender'].mask(df['gender'] == 'Woman', 'Femmes', inplace=True)
+            df['age'].mask(df['age'] == '<24 rokov', '<24 ans', inplace=True)
+            df['age'].mask(df['age'] == '25-34 rokov', '25-34 ans', inplace=True)
+            df['age'].mask(df['age'] == '35-44 rokov', '35-44 ans', inplace=True)
+            df['age'].mask(df['age'] == '45-54 rokov', '45-54 ans', inplace=True)
+            df['age'].mask(df['age'] == '55+ rokov', '55+ ans', inplace=True)
+            df['age'].mask(df['age'] == '', 'Non listé', inplace=True)
+            return df
+        else:
+            return df
