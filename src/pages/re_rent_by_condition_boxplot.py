@@ -8,7 +8,7 @@ import pandas as pd
 
 from constants.districts import RE_TYPES, DISTRICTS
 from constants.url import API_URL, API_PORT
-from maindash import app
+from maindash import app, master_token
 from translate.translate import translate, translate_dataset
 
 custom_re_rent_graph_condition_boxplot = dcc.Graph(
@@ -38,11 +38,12 @@ def create_custom_re_graph_condition_boxplot(city, utility, re_type, lang):
         params = {
             "re_type": re_type,
             "district": city,
-            "utility": utility
+            "utility": utility,
+            "token": master_token
         }
 
-        url = f"http://{API_URL}:{API_PORT}/re_condition_boxplot"
-        # url = f"{API_URL}:{API_PORT}/re_condition_boxplot"
+        url = f"http://{API_URL}:{API_PORT}/re_condition_boxplot_rent"
+        # url = f"http://localhost:7777/re_condition_boxplot_rent"
 
         data = requests.get(url=url, params=params)
         final_df = pd.DataFrame.from_dict(data.json())
@@ -52,11 +53,12 @@ def create_custom_re_graph_condition_boxplot(city, utility, re_type, lang):
         params = {
             "re_type": re_type,
             "district": city,
-            "utility": utility
+            "utility": utility,
+            "token": master_token
         }
 
         url = f"http://{API_URL}:{API_PORT}/re_condition_boxplot_rent"
-        # url = f"{API_URL}:{API_PORT}/re_condition_boxplot_rent"
+        # url = f"http://localhost:7777/re_condition_boxplot_rent"
 
         data = requests.get(url=url, params=params)
         final_df = pd.DataFrame.from_dict(data.json())

@@ -8,7 +8,7 @@ import plotly.express as px
 from dash import Output, Input, dcc, html
 
 from constants.url import API_URL, API_PORT
-from maindash import app
+from maindash import app, master_token
 from translate.translate import translate
 from util.render_graph_height import render_graph_height
 
@@ -32,10 +32,11 @@ def input_triggers_spinner(value):
 )
 def get_median_salary_by_city(lang):
     start = time()
+    params = {"token": master_token}
     url = f"http://{API_URL}:{API_PORT}/salary_by_district"
     # url = f"{API_URL}:{API_PORT}/salary_by_district"
 
-    r = requests.get(url)
+    r = requests.get(url, params=params)
     end = time()
     print(f"pulling data for salaries by district {end-start} sec...")
 

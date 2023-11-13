@@ -6,7 +6,7 @@ import requests
 
 from constants.districts import RE_TYPES
 from constants.url import API_URL, API_PORT
-from maindash import app
+from maindash import app, master_token
 
 from dash import html
 from dash import dcc
@@ -37,7 +37,8 @@ def input_triggers_spinner(value):
 def create_a(re_type, lang):
 
     params = {
-        "re_type": re_type
+        "re_type": re_type,
+        "token": master_token
     }
 
     start = time()

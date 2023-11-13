@@ -11,9 +11,9 @@ import plotly.express as px
 
 from constants.districts import CITIES
 from constants.url import API_URL, API_PORT
-from maindash import app
+from maindash import app, master_token
 
-from translate.translate import translate
+from translate.translate import translate, translate_salary
 
 from util.render_graph_height import render_graph_height
 
@@ -41,10 +41,9 @@ def create_custom_bar_per_position(calcul_type, outliers_checkbox, place, lang):
 
     start = time()
     url = f"http://{API_URL}:{API_PORT}/salary_by_position"
-    # url = f"{API_URL}:{API_PORT}/salary_by_position"
     # url = f"http://localhost:{API_PORT}/salary_by_position"
 
-    params = {}
+    params = {"token": master_token}
 
     if outliers_checkbox == [0]:
         params["outliers"] = 0
@@ -68,6 +67,20 @@ def create_custom_bar_per_position(calcul_type, outliers_checkbox, place, lang):
 
     rendered_height = render_graph_height(df_id_grouped, by="position")
     salary_value = res["salary_value"]
+
+    # if place == "Medzilaborce":
+
+    if lang == "EN":
+        lang_deepl = "EN-GB"
+    else:
+        lang_deepl = lang
+
+    # which = "positions"
+    # df_id_grouped = translate_positions(df_id_grouped, lang_deepl)
+
+    which = "position"
+    page = "positions"
+    df_id_grouped = translate_salary(df_id_grouped, lang_deepl, which, page)
 
     figure = px.bar(
         df_id_grouped,

@@ -7,7 +7,7 @@ import plotly.express as px
 
 from constants.districts import DISTRICTS, RE_TYPES
 from constants.url import API_URL, API_PORT
-from maindash import app
+from maindash import app, master_token
 from time import time
 
 from translate.translate import translate
@@ -39,7 +39,8 @@ def input_triggers_spinner(value):
 def create_custom_density_heatmap_per_re(city, re_type, lang):
     params = {
         "re_type": re_type,
-        "district": city
+        "district": city,
+        "token": master_token
     }
 
     start = time()

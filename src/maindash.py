@@ -1,5 +1,13 @@
+import os
+
 import dash
 import dash_bootstrap_components as dbc
+from dotenv import load_dotenv
+
+
+load_dotenv("../SECRETS/api.env")
+master_token = os.getenv("MASTER_TOKEN")
+deel_l_api_key = os.getenv("DEEPL_API_KEY")
 
 app = dash.Dash(
     __name__,

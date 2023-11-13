@@ -7,7 +7,7 @@ import pandas as pd
 
 from constants.districts import RE_TYPES, DISTRICTS
 from constants.url import API_URL, API_PORT
-from maindash import app
+from maindash import app, master_token
 from translate.translate import translate, translate_dataset
 
 custom_re_graph_condition_boxplot = dcc.Graph(
@@ -34,11 +34,12 @@ def input_triggers_spinner(value):
 def create_custom_re_graph_condition_boxplot(city, re_type, lang):
     params = {
         "re_type": re_type,
-        "district": city
+        "district": city,
+        "token": master_token
     }
 
     url = f"http://{API_URL}:{API_PORT}/re_by_condition_boxplot"
-    # url = f"{API_URL}:{API_PORT}/re_by_condition_boxplot"
+    # url = f"http://localhost:7777/re_by_condition_boxplot"
     data = requests.get(url=url, params=params)
 
     final_df = pd.DataFrame.from_dict(data.json())

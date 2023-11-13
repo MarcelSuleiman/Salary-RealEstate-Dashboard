@@ -10,7 +10,7 @@ import plotly.express as px
 
 from constants.districts import CITIES
 from constants.url import API_URL, API_PORT
-from maindash import app
+from maindash import app, master_token
 from dash.dependencies import Input, Output
 
 from translate.translate import translate
@@ -52,7 +52,7 @@ def get_data(place):
     # url = f"{API_URL}:{API_PORT}/salary_distribution"
     # url = f"http://localhost:7777/salary_distribution"
 
-    params = {}
+    params = {"token": master_token}
 
     if place is not None:
         params["place"] = place

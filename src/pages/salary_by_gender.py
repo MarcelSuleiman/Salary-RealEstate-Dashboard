@@ -9,7 +9,7 @@ from dash import html
 
 from constants.districts import CITIES
 from constants.url import API_URL, API_PORT
-from maindash import app
+from maindash import app, master_token
 from translate.translate import translate, translate_dataset
 
 compare_gender_salary_base = dcc.Graph(
@@ -50,7 +50,7 @@ def create_graph_test(lang, position_name=None, city_name=None):
     # url = f"{API_URL}:{API_PORT}/salary_by_gender"
     # url = f"http://localhost:7777/salary_by_gender"
 
-    params = {}
+    params = {"token": master_token}
 
     if position_name is not None:
         params["position"] = position_name
@@ -137,7 +137,7 @@ def create_graph_test_2(position_name, city_name, lang):
     # url = f"{API_URL}:{API_PORT}/salary_by_gender"
     # url = f"http://localhost:7777/salary_by_gender"
 
-    params = {}
+    params = {"token": master_token}
 
     if position_name is not None:
         params["position"] = position_name
@@ -239,7 +239,9 @@ def get_position_names():
     # url = f"{API_URL}:{API_PORT}/position_names"
     # url = f"http://localhost:7777/position_names"
 
-    data = requests.get(url=url)
+    params = {"token": master_token}
+
+    data = requests.get(url=url, params=params)
     df = pd.DataFrame.from_dict(data.json())
 
     return sorted(p for p in df["position"])

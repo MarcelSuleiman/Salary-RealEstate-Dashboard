@@ -7,7 +7,7 @@ import plotly.express as px
 
 from constants.districts import DISTRICTS, RE_TYPES
 from constants.url import API_URL, API_PORT
-from maindash import app
+from maindash import app, master_token
 
 from translate.translate import translate
 
@@ -33,7 +33,8 @@ def input_triggers_spinner(value):
 def create_custom_line_chart_count_re_per_day(city, re_type, lang):
     params = {
         "re_type": re_type,
-        "district": city
+        "district": city,
+        "token": master_token
     }
 
     url = f"http://{API_URL}:{API_PORT}/re_count_per_day"
@@ -47,7 +48,7 @@ def create_custom_line_chart_count_re_per_day(city, re_type, lang):
         x="the_date",
         y="count",
         line_shape="spline",
-        markers=True,
+        # markers=True,
         height=700,
         # text="count",
         labels=translate(lang),

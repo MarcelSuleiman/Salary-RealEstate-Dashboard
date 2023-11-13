@@ -4,6 +4,7 @@ import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output, State
 
 from maindash import app
+from pages.population import final_custom_population_graph
 from translate.translate import translate
 
 from pages.in_by_percentage_per_day import final_custom_interest_graph_percentage_per_day
@@ -41,11 +42,12 @@ SIDEBAR_STYLE = {
     # "position": "fixed",
     "position": "absolute",
     # "position": "sticky",
-    "top": 62.5,
+    "top": 57,
     "left": 0,
     "bottom": 0,
     "width": "17rem",
-    "height": "100%",
+    # "height": "100%",
+    "min-height": "1200px",  # must increase with every new link in sidebar
     "z-index": 1,
     "overflow-x": "hidden",
     "transition": "all 0.5s",
@@ -55,11 +57,12 @@ SIDEBAR_STYLE = {
 
 SIDEBAR_HIDEN = {
     "position": "fixed",
-    "top": 62.5,
+    "top": 57,
     "left": "-17rem",
     "bottom": 0,
     "width": "17rem",
-    "height": "100%",
+    # "height": "100%",
+    "min-height": "1200px",  # must increase with every new link in sidebar
     "z-index": 1,
     "overflow-x": "hidden",
     "transition": "all 0.5s",
@@ -89,6 +92,7 @@ CONTENT_STYLE1 = {
 
 navbar_right = dbc.NavbarSimple(
     children=[
+        dbc.Button("Sidebar", outline=True, color="secondary", className="mr-1", id="btn_sidebar"),
         dcc.Dropdown(
             id="set_language",
             # options=["SK", "EN", "FR", "HU"],
@@ -117,7 +121,7 @@ def get_link_names(lang, text):
 def get_navbar_left(lang):
     navbar_left = dbc.NavbarSimple(
         children=[
-            dbc.Button("Sidebar", outline=True, color="secondary", className="mr-1", id="btn_sidebar"),
+            # dbc.Button("Sidebar", outline=True, color="secondary", className="mr-1", id="btn_sidebar"),
             dbc.DropdownMenu(
                 children=[
                     # dbc.DropdownMenuItem("More pages", header=True),
@@ -199,6 +203,7 @@ def get_sidebar(lang):
                         dbc.NavLink(id="001", children=get_link_names(lang, text="Vývoj úrokových sadzieb"), href="/page-10", active="exact"),
                         dbc.NavLink(id="001", children=get_link_names(lang, text="Mapa Slovenska: mzdy v regiónoch"), href="/page-11", active="exact"),
                         dbc.NavLink(id="001", children=get_link_names(lang, text="Mapa Slovenska: pomer ceny nehnutelnosti a mzdy"), href="/page-12", active="exact"),
+                        # dbc.NavLink(id="001", children="Obyvatelsvo SR", href="/page-13", active="exact"),
                     ]),
                     html.Div([
                         html.Br(),
@@ -231,7 +236,7 @@ app.layout = html.Div([
     dcc.Location(id="url"),
     # navbar_left,
     # navbar_right,
-    html.Div(children=[navbar_left, navbar_right], style={"display": "grid", "grid-template-columns": "90% 10%"}),
+    html.Div(children=[navbar_left, navbar_right], style={"display": "grid", "grid-template-columns": "80% 20%"}),
     sidebar,
     content,
 ])
@@ -302,6 +307,8 @@ def render_page_content(pathname):
         return custom_map_salary
     elif pathname == "/page-12":
         return custom_re_map_salary_price_ratio
+    # elif pathname == "/page-13":
+    #     return final_custom_population_graph
     elif pathname == "/page-99":
         return [
             dcc.Location(href="https://www.linkedin.com/in/marcel-suleiman/", pathname="[Author info]", id="qxz"),

@@ -12,9 +12,9 @@ import plotly.express as px
 
 from constants.districts import CITIES
 from constants.url import API_URL, API_PORT
-from maindash import app
+from maindash import app, master_token
 
-from translate.translate import translate
+from translate.translate import translate, translate_salary
 from util.render_graph_height import render_graph_height
 
 custom_salary_graph_by_industry = html.Div([dcc.Graph(
@@ -41,15 +41,13 @@ def create_custom_bar_per_industry(calcul_type, outliers_checkbox, place, lang):
     url = f"http://{API_URL}:{API_PORT}/salary_by_industry"
     # url = f"{API_URL}:{API_PORT}/salary_by_industry"
 
-    params = {}
+    params = {"token": master_token}
 
     if outliers_checkbox == [0]:
         params["outliers"] = 0
 
     if place is not None:
         params["place"] = place
-
-    print(calcul_type)
 
     if calcul_type == "mean":
         params["calcul_type"] = calcul_type
@@ -66,8 +64,18 @@ def create_custom_bar_per_industry(calcul_type, outliers_checkbox, place, lang):
 
     df_id_grouped = df_id_grouped.reset_index(drop=True)
     df_id_grouped.rename(columns={"position_place": "position_industry"}, inplace=True)
+    df_id_grouped.rename(columns={"count": "count_of_respondents"}, inplace=True)
 
-    rendered_height = render_graph_height(df_id_grouped, by="count")
+    rendered_height = render_graph_height(df_id_grouped, by="count_of_respondents")
+
+    # if lang == "EN":
+    #     lang_deepl = "EN-GB"
+    # else:
+    #     lang_deepl = lang
+
+    which = "position_industry"
+    page = "industry"
+    df_id_grouped = translate_salary(df_id_grouped, lang, which, page)
 
     figure = px.bar(
         df_id_grouped,
@@ -75,7 +83,7 @@ def create_custom_bar_per_industry(calcul_type, outliers_checkbox, place, lang):
         x='salary',
         y='position_industry',
         text_auto=True,
-        hover_data=["count"],
+        hover_data=["count_of_respondents"],
         labels=translate(lang),
         height=rendered_height
     )

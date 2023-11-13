@@ -11,7 +11,6 @@ import pandas as pd
 from dash.dependencies import Input, Output
 from dash import dcc
 from dash import html
-import plotly.express as px
 from constants.districts import RE_TYPES, DISTRICTS
 from translate.translate import translate
 
@@ -38,11 +37,12 @@ def create_custom_re_graph_price_per_day(city, re_type, lang):
 
     params = {
         "re_type": re_type,
-        "district": city
+        "district": city,
+        "token": "master_token_123_#&@_filip"
     }
 
     url = f"http://{API_URL}:{API_PORT}/re_by_price_per_day"
-    # url = f"{API_URL}:{API_PORT}/re_by_price_per_day"
+    # url = f"http://localhost:7777/re_by_price_per_day"
 
     data = requests.get(url=url, params=params)
     final_df = pd.DataFrame.from_dict(data.json())
@@ -58,25 +58,36 @@ def create_custom_re_graph_price_per_day(city, re_type, lang):
         name = "Prix moyen [en €]"
 
     subfig.add_trace(go.Scatter(
-        # final_df,
         x=final_df.the_date,
         y=final_df.average_price,
         name=name,
         line={'shape': 'spline', 'smoothing': 1}
     ))
 
-    root_folder = Path(__file__).parents[1]
-    my_path = root_folder / "uvery.csv"
+    # root_folder = Path(__file__).parents[1]
+    # my_path = root_folder / "uvery.csv"
+    #
+    # df = pd.read_csv(my_path, delimiter=";")
 
-    df = pd.read_csv(my_path, delimiter=";")
-    print(df.head())
+    url = f"http://{API_URL}:{API_PORT}/interest_rates"
+    # url = f"http://localhost:7777/interest_rates"
 
-    final_df = df.loc[df['loan_type'].isin(["H"])]
-    final_df = final_df.groupby(by="The_date")["interest"].mean().apply(lambda x: round(x, 2)).reset_index()
+    params = {
+        "loan_type": "H",
+        "token": "master_token_123_#&@_filip"
+    }
+
+    data = requests.get(url=url, params=params)
+    df = pd.DataFrame.from_dict(data.json())
+
+    # unnecessary until we pull data from api - api response filtered row depends on param input
+    # final_df = df.loc[df['loan_type'].isin(["H"])]
+
+    final_df = df.groupby(by="the_date")["interest"].mean().apply(lambda x: round(x, 2)).reset_index()
 
     name = "Priemerná úroková sadzba [v %]"
     if lang == "SK":
-        name = 'Priemerná cena [v €]'
+        name = 'Priemerná úroková sadzba [v %]'
     elif lang == "EN":
         name = "Average interest rate [in %]"
     elif lang == "FR":
@@ -84,8 +95,7 @@ def create_custom_re_graph_price_per_day(city, re_type, lang):
 
     subfig.add_trace(
         go.Scatter(
-            # final_df,
-            x=final_df.The_date,
+            x=final_df.the_date,
             y=final_df.interest,
             name=name,
             line={'shape': 'spline', 'smoothing': 1}

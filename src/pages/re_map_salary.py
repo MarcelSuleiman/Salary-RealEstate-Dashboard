@@ -11,7 +11,7 @@ import plotly.express as px
 import pandas as pd
 
 from constants.url import API_URL, API_PORT
-from maindash import app
+from maindash import app, master_token
 from translate.translate import translate
 
 
@@ -38,11 +38,12 @@ def input_triggers_spinner(value):
 )
 def create_sk_map_salary(lang):
     start = time()
+    params = {"token": master_token}
     url = f"http://{API_URL}:{API_PORT}/salary_map"
     # url = f"{API_URL}:{API_PORT}/salary_map"
     # url = f"http://localhost:7777/salary_map"
 
-    r = requests.get(url)
+    r = requests.get(url, params=params)
     end = time()
     print(f"pulling salaries for salary map: {end - start} sec...")
 
