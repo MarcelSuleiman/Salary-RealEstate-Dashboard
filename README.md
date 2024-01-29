@@ -5,4 +5,4 @@ This repository is just "dash dashboard"
 
 Whole project schema:
 
-![schema](https://github.com/MarcelSuleiman/salary_dash/blob/main/realestate_dash.png)
+![schema]([https://github.com/MarcelSuleiman/salary_dash/blob/main/realestate_dash.png](https://github.com/MarcelSuleiman/Salary-RealEstate-Dashboard/blob/main/realestate_dash.png)https://github.com/MarcelSuleiman/Salary-RealEstate-Dashboard/blob/main/realestate_dash.png)
