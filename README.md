@@ -4,4 +4,5 @@ live preview: [Salary-RealEstate-Dashboard](https://bit.ly/Salaries_and_real_est
 This repository is just "dash dashboard"
 
 Whole project schema:
-[comment]:![plot](https://github.com/MarcelSuleiman/salary_dash/blob/main/realestate_dash.png)
+
+![schema](https://github.com/MarcelSuleiman/salary_dash/blob/main/realestate_dash.png)
