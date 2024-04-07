@@ -1,5 +1,5 @@
 # Salary & RealEstate Dashboard
-live preview: [Salary-RealEstate-Dashboard](https://bit.ly/Salaries_and_real_estate_prices_in_Slovakia)
+live preview: [Salary-RealEstate-Dashboard](http://salary-realestate-dashboard.suflik.eu/)
 
 >... if webpage isn't reachable, check [UptimeMonitor Server Status](https://stats.uptimerobot.com/hAGNqUgDqs)
 
